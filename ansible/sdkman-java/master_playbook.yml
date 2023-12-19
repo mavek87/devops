@@ -23,17 +23,8 @@
       args:
         executable: /bin/bash
 
-    - name: Adding SDK Man to bash_profile
-      become: no
-      lineinfile: path={{ home }}/.bash_profile
-        line={{ item }}
-        state=present
-        create=yes
-      with_items:
-        - 'source "$HOME/.sdkman/bin/sdkman-init.sh"'
-
     - name: Installing Java
-      shell: source ~/.bash_profile && sdk install java {{ java_version }}
       become: no
+      shell: source ~/.sdkman/bin/sdkman-init.sh && sdk install java {{ java_version }}
       args:
         executable: /bin/bash
