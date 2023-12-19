@@ -1,5 +1,7 @@
 *
 !.gitignore
+!java/
+!java/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/

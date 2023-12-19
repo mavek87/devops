@@ -1,0 +1,63 @@
+---
+- hosts: all
+  become: true
+
+  # https://stackoverflow.com/questions/27733511/how-to-set-linux-environment-variables-with-ansible
+
+  vars:
+    - jdk_name: zulu17.46.19-ca-jdk17.0.9-linux_x64
+    - archive_name: "{{ jdk_name }}.tar.gz"
+    - jdk_download_url: "https://cdn.azul.com/zulu/bin/{{ archive_name }}"
+    - jdk_download_location: "/opt/{{ archive_name }}"
+    - java_home: "/opt/jdk17"
+    - os_environment:
+      - key: PATH
+        value: "{{ ansible_env.PATH }}:{{ java_home }}/bin"
+
+  pre_tasks:
+    - name: Verifica se la dir JDK esiste
+      ansible.builtin.stat:
+        path: "{{ java_home }}"
+      register: jdk_home_check
+
+  tasks:
+    - name: Download the JDK binaries
+      get_url:
+        url: "{{ jdk_download_url }}"
+        dest: "{{ jdk_download_location }}"
+      when: jdk_home_check.stat.exists == false
+
+    - name: Unzip the downloaded file
+      unarchive:
+        src: "{{ jdk_download_location }}"
+        dest: "/opt"
+        remote_src: yes
+      when: jdk_home_check.stat.exists == false
+
+    - name: Rename folder
+      command: "mv /opt/{{ jdk_name }} {{ java_home }}"
+      when: jdk_home_check.stat.exists == false
+
+    - name: Remove the downloaded compressed file
+      file:
+        path: "{{ jdk_download_location }}"
+        state: absent
+      when: jdk_home_check.stat.exists == false
+
+    - name: Set the JAVA_HOME in /etc/profile file
+      lineinfile:
+        path: "/etc/profile"
+        state: present
+        line: "{{ item }}"
+      with_items:
+        - 'export JAVA_HOME="{{ java_home }}"'
+      when: jdk_home_check.stat.exists == false
+
+    - name: Add JDK to PATH in the /etc/environment
+      lineinfile:
+        path: "/etc/environment"
+        state: present
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value}}"
+      with_items: "{{ os_environment }}"
+      when: jdk_home_check.stat.exists == false
