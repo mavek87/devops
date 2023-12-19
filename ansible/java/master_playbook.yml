@@ -42,7 +42,6 @@
       file:
         path: "{{ jdk_download_location }}"
         state: absent
-      when: jdk_home_check.stat.exists == false
 
     - name: Set the JAVA_HOME in /etc/profile file
       lineinfile:
@@ -51,7 +50,6 @@
         line: "{{ item }}"
       with_items:
         - 'export JAVA_HOME="{{ java_home }}"'
-      when: jdk_home_check.stat.exists == false
 
     - name: Add JDK to PATH in the /etc/environment
       lineinfile:
@@ -60,4 +58,3 @@
         regexp: "^{{ item.key }}="
         line: "{{ item.key }}={{ item.value}}"
       with_items: "{{ os_environment }}"
-      when: jdk_home_check.stat.exists == false
