@@ -4,7 +4,6 @@
 - hosts: all
 
   vars:
-    - home: "{{ ansible_env.HOME }}"
     - java_version: 17.0.9-zulu
 
   pre_tasks:
@@ -17,13 +16,13 @@
           - unzip
 
   tasks:
-    - name: Installing SDK Man
+    - name: Installing SDKMan
       become: no
       shell: "curl -s 'https://get.sdkman.io' | bash"
       args:
         executable: /bin/bash
 
-    - name: Installing Java
+    - name: Installing Java using SDKMan
       become: no
       shell: source ~/.sdkman/bin/sdkman-init.sh && sdk install java {{ java_version }}
       args:
