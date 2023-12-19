@@ -3,6 +3,7 @@
   become: true
 
   # https://stackoverflow.com/questions/27733511/how-to-set-linux-environment-variables-with-ansible
+  # https://cscontents.com/how-to-create-ansible-role-for-java-installation/
 
   vars:
     - jdk_name: zulu17.46.19-ca-jdk17.0.9-linux_x64
