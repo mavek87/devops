@@ -1,1 +1,8 @@
-#
+*
+!.gitignore
+!docker-and-compose/
+!docker-and-compose/**
+!docker-and-compose-jenkins/
+!docker-and-compose-jenkins/**
+!docker-and-compose-prometheus-grafana/
+!docker-and-compose-prometheus-grafana/**

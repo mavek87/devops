@@ -19,6 +19,10 @@
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu focal stable
 
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+
     - name: Install docker
       apt:
         name:
