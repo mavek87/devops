@@ -1,0 +1,9 @@
+*
+!.gitignore
+!README.md
+!ansible/
+!ansible/**
+!docker-compose/
+!docker-compose/**
+!vagrant/
+!vagrant/**

@@ -1,0 +1,4 @@
+---
+- import_playbook: ../docker-and-compose/master_playbook.yml
+- import_playbook: prometheus_grafana.yml
+

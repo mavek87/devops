@@ -1,0 +1,8 @@
+*
+!.gitignore
+!README.md
+!vagrant-essential-plugin-setup.sh
+!ubuntu-docker/
+!ubuntu-docker/**
+!ubuntu-prometheus-grafana/
+!ubuntu-prometheus-grafana/**
