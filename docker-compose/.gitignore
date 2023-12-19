@@ -1,4 +1,6 @@
 *
 !.gitignore
+!jenkins/
+!jenkins/**
 !prometheus-grafana/
 !prometheus-grafana/**

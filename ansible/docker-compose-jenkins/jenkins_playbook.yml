@@ -1,0 +1,12 @@
+- hosts: all
+  become: yes
+
+  vars:
+    app_folder_name: "jenkins"
+
+  tasks:
+    - name: Copy docker compose for prometheus-grafana to target machine host dir
+      become: no
+      ansible.builtin.copy:
+        src: "../../docker-compose/jenkins/"
+        dest: "~/{{ app_folder_name }}"
