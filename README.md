@@ -1,6 +1,6 @@
 # Devops Utilities Repo
 
-Infrastructure as Code (IaC) repository of some devops utilities for **ansible**, **docker** and **vagrant** written by me.
+Infrastructure as Code (IaC) repository of some devops utilities using **ansible**, **docker** and **vagrant** written by me.
 
 
 ### VirtualBox
