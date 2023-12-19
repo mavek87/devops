@@ -2,8 +2,8 @@
 !.gitignore
 !java/
 !java/**
-#!sdkman-java/
-#!sdkman-java/**
+!sdkman-java/
+!sdkman-java/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/

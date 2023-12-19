@@ -1,0 +1,39 @@
+---
+# https://stackoverflow.com/questions/76898362/install-sdkman-on-ubuntu-server-through-ansible-playbook
+
+- hosts: all
+
+  vars:
+    - home: "{{ ansible_env.HOME }}"
+    - java_version: 17.0.9-zulu
+
+  pre_tasks:
+    - name: Installing SDKMAn dependencies
+      become: true
+      apt:
+        state: latest
+        name:
+          - zip
+          - unzip
+
+  tasks:
+    - name: Installing SDK Man
+      become: no
+      shell: "curl -s 'https://get.sdkman.io' | bash"
+      args:
+        executable: /bin/bash
+
+    - name: Adding SDK Man to bash_profile
+      become: no
+      lineinfile: path={{ home }}/.bash_profile
+        line={{ item }}
+        state=present
+        create=yes
+      with_items:
+        - 'source "$HOME/.sdkman/bin/sdkman-init.sh"'
+
+    - name: Installing Java
+      shell: source ~/.bash_profile && sdk install java {{ java_version }}
+      become: no
+      args:
+        executable: /bin/bash
