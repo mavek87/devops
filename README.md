@@ -1,28 +1,27 @@
-# Devops utils repo
+# Devops Utilities Repo
 
 Infrastructure as Code (IaC) repository of some devops utilities for **ansible**, **docker** and **vagrant** written by me.
 
-## Info about the technologies used:
 
-#### VirtualBox
+### VirtualBox
 
 Virtual Machines
 
 https://www.virtualbox.org/
 
-#### Docker and Docker Compose
+### Docker and Docker Compose
 
 Containerized applications
 
 https://docs.docker.com/
 
-#### Vagrant
+### Vagrant
 
 Spin-up virtual machines
 
 https://www.vagrantup.com/
 
-#### Ansible
+### Ansible
 
 Automate operations/installations on servers and virtual machines
 
