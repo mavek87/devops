@@ -1,0 +1,3 @@
+---
+- import_playbook: ../java/master_playbook.yml
+- import_playbook: jenkins_playbook.yml

@@ -4,6 +4,8 @@
 !java/**
 !sdkman-java/
 !sdkman-java/**
+!jenkins/
+!jenkins/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/

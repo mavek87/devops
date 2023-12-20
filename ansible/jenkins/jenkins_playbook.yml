@@ -1,0 +1,41 @@
+---
+# https://www.jenkins.io/doc/book/installing/linux/
+
+- hosts: all
+
+  tasks:
+
+    - name: Download Jenkins GPG key
+      become: true
+      ansible.builtin.get_url:
+        url: "https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key"
+        dest: "/usr/share/keyrings/jenkins-keyring.asc"
+
+    - name: Add Jenkins repository to APT sources
+      become: true
+      ansible.builtin.shell:
+        cmd: "echo 'deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/' | tee /etc/apt/sources.list.d/jenkins.list > /dev/null"
+
+    - name: Update apt packages
+      become: true
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install jenkins
+      become: true
+      ansible.builtin.apt:
+        name: jenkins
+        state: present
+        update_cache: yes
+
+    - name: Enable Jenkins service at boot
+      become: true
+      ansible.builtin.systemd:
+        name: jenkins
+        enabled: yes
+
+    - name: Start Jenkins service
+      become: true
+      ansible.builtin.systemd:
+        name: jenkins
+        state: started
