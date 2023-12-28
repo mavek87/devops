@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Playbook for installing Java
+  hosts: all
   become: true
 
   # https://stackoverflow.com/questions/27733511/how-to-set-linux-environment-variables-with-ansible

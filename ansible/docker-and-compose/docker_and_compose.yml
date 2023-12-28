@@ -1,5 +1,5 @@
 ---
-- name: Playbook for installing docker and docker compose
+- name: Playbook for installing Docker and Docker Compose
   hosts: all
   become: yes
 

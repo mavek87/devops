@@ -1,6 +1,6 @@
 ---
 
-- name: Playbook for updating and upgrading apt packages
+- name: Playbook for updating and upgrading apt packages (Debian, Ubuntu)
   hosts: all
   become: true
 

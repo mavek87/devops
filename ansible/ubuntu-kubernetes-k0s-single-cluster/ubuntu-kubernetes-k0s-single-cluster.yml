@@ -2,7 +2,7 @@
 
 #  https://docs.k0sproject.io/v1.28.4+k0s.0/install/
 
-- name: Installing a single node cluster k0s
+- name: Playbook for installing a single node k0s cluster
   hosts: all
 
   vars:
