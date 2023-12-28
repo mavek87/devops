@@ -12,3 +12,7 @@
 !docker-and-compose-jenkins/**
 !docker-and-compose-prometheus-grafana/
 !docker-and-compose-prometheus-grafana/**
+!ubuntu-update-and-upgrade/
+!ubuntu-update-and-upgrade/**
+!ubuntu-kubernetes-k0s-single-cluster/
+!ubuntu-kubernetes-k0s-single-cluster/**

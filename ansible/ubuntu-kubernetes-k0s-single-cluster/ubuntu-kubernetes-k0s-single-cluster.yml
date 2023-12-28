@@ -1,0 +1,94 @@
+---
+
+#  https://docs.k0sproject.io/v1.28.4+k0s.0/install/
+
+- name: Installing a single node cluster k0s
+  hosts: all
+
+  vars:
+    user_home: "{{ ansible_env.HOME }}"
+    bashrc_file: "{{ user_home }}/.bashrc"
+    kube_config_dir: "{{ user_home }}/.kube"
+    kube_config_file: "{{ kube_config_dir }}/config"
+
+  tasks:
+    - name: Download and install k0s
+      shell: "curl -sSLf https://get.k0s.sh | sudo sh"
+      become: yes
+
+    - name: Install k0s Controller
+      command: "k0s install controller --single"
+      become: yes
+
+    - name: Start k0s Controller
+      command: "k0s start"
+      become: yes
+
+    - name: Install kubectl
+      command: "snap install kubectl --classic"
+      become: yes
+
+    - name: Create .kube folder
+      command: "mkdir -p {{ kube_config_dir }}"
+      become: no
+
+    - name: Wait until the unique node state is "Ready"
+      shell: "k0s kubectl get nodes --no-headers | head -n 1 | awk '{print $2}'"
+      register: node_status
+      until: node_status.stdout_lines | length > 0 and node_status.stdout_lines[0] == "Ready"
+      retries: 60   # Max number of retries
+      delay: 5      # Interval of time between retries (in seconds)
+      ignore_errors: yes
+      become: yes
+
+    - name: Creating the config file
+      shell: "k0s kubeconfig admin > {{ kube_config_file }}"
+      become: yes
+
+    - name: Gather kubeconfig file metadata
+      stat:
+        path: "{{ kube_config_file }}"
+      register: kubeconfig_info
+      become: no
+
+    - name: Verify that the kubeconfig file was created successfully
+      fail:
+        msg: "The kubeconfig file does not exist or is empty!"
+      when: kubeconfig_info.stat.exists == false or kubeconfig_info.stat.size == 0
+      become: no
+
+    - name: Exporting the KUBECONFIG variable in the user .bashrc file
+      lineinfile:
+        path: "{{ bashrc_file }}"
+        state: present
+        line: "{{ item }}"
+      with_items:
+        - 'export KUBECONFIG="{{ kube_config_file }}"'
+      become: no
+
+    - name: Creating alias 'k' for 'kubectl' in the user .bashrc file
+      lineinfile:
+        path: "{{ bashrc_file }}"
+        state: present
+        line: "{{ item }}"
+      with_items:
+        - "alias k='kubectl'"
+      become: no
+
+# This could be useful if a server restart is needed
+
+#    - name: Reboot host and wait for it to restart
+#      reboot:
+#        msg: "Reboot initiated by Ansible"
+#        connect_timeout: 5
+#        reboot_timeout: 600
+#        pre_reboot_delay: 0
+#        post_reboot_delay: 30
+#        test_command: whoami
+#      This handler will:
+#
+#      Reboot the host
+#      Wait 30 seconds
+#      Attempt to connect via ssh and run whoami
+#      Disconnect after 5 seconds if it ssh isn’t working
+#      Keep attempting to connect for 10 minutes (600 seconds)
