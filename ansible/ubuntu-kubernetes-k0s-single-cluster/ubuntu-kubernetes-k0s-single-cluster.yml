@@ -24,6 +24,16 @@
       command: "k0s start"
       become: yes
 
+    - name: Reboot host and wait for it to restart
+      reboot:
+        msg: "Reboot initiated by Ansible"
+        connect_timeout: 5    # Disconnect after 5 seconds if ssh isn’t working
+        reboot_timeout: 600   # Keep attempting to connect for 10 minutes (600 seconds)
+        pre_reboot_delay: 0
+        post_reboot_delay: 30 # Wait 30 seconds
+        test_command: whoami  # Attempt to connect via ssh and run whoami
+      become: yes
+
     - name: Install kubectl
       command: "snap install kubectl --classic"
       become: yes
@@ -75,20 +85,9 @@
         - "alias k='kubectl'"
       become: no
 
-# This could be useful if a server restart is needed
-
-#    - name: Reboot host and wait for it to restart
-#      reboot:
-#        msg: "Reboot initiated by Ansible"
-#        connect_timeout: 5
-#        reboot_timeout: 600
-#        pre_reboot_delay: 0
-#        post_reboot_delay: 30
-#        test_command: whoami
-#      This handler will:
-#
-#      Reboot the host
-#      Wait 30 seconds
-#      Attempt to connect via ssh and run whoami
-#      Disconnect after 5 seconds if it ssh isn’t working
-#      Keep attempting to connect for 10 minutes (600 seconds)
+    - name: Download the kubeconfig file to admin the cluster in $HOME/.kube/config-ansible-cluster. Replace server localhost with the public ip.
+      fetch:
+        src: /var/lib/k0s/pki/admin.conf
+        dest: ~/.kube/config-ansible-cluster
+        flat: yes
+      become: yes
