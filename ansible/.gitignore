@@ -14,6 +14,8 @@
 !docker-and-compose-prometheus-grafana/**
 !docker-compose-rancher/
 !docker-compose-rancher/**
+!ubuntu-server-commons/
+!ubuntu-server-commons/**
 !ubuntu-update-and-upgrade/
 !ubuntu-update-and-upgrade/**
 !ubuntu-automatic-security-updates/
