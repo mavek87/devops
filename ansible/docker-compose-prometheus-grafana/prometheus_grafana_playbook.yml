@@ -3,11 +3,25 @@
   become: yes
 
   vars:
-    app_folder_name: "prometheus-grafana"
+    user_home: "{{ ansible_env.HOME }}"
+    prometheus_grafana_folder: "{{ user_home }}/prometheus-grafana"
 
   tasks:
-    - name: Copy docker compose for prometheus-grafana to target machine host dir
+    - name: Copy docker compose file for Prometheus-Grafana to target machine
       become: no
-      ansible.builtin.copy:
+      copy:
         src: "../../docker-compose/prometheus-grafana/"
-        dest: "~/{{ app_folder_name }}"
+        dest: "{{ prometheus_grafana_folder }}"
+
+    - name: Obtain info about Prometheus-Grafana container
+      become: yes
+      docker_container_info:
+        name: prometheus-grafana
+      register: docker_prometheus_grafana_info
+
+    - name: Start the Prometheus-Grafana container with Docker Compose if it's not already in execution
+      become: yes
+      command: "docker compose up -d"
+      args:
+        chdir: "{{ prometheus_grafana_folder }}"
+      when: not docker_prometheus_grafana_info.exists

@@ -6,14 +6,14 @@
 !sdkman-java/**
 !jenkins/
 !jenkins/**
-!rancher/
-!rancher/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/
 !docker-and-compose-jenkins/**
 !docker-and-compose-prometheus-grafana/
 !docker-and-compose-prometheus-grafana/**
+!docker-compose-rancher/
+!docker-compose-rancher/**
 !ubuntu-update-and-upgrade/
 !ubuntu-update-and-upgrade/**
 !ubuntu-kubernetes-k0s-single-cluster/

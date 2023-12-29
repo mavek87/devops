@@ -3,11 +3,25 @@
   become: yes
 
   vars:
-    app_folder_name: "jenkins"
+    user_home: "{{ ansible_env.HOME }}"
+    jenkins_folder: "{{ user_home }}/jenkins"
 
   tasks:
-    - name: Copy docker compose for prometheus-grafana to target machine host dir
+    - name: Copy docker compose file for Jenkins to target machine
       become: no
-      ansible.builtin.copy:
+      copy:
         src: "../../docker-compose/jenkins/"
-        dest: "~/{{ app_folder_name }}"
+        dest: "{{ jenkins_folder }}"
+
+    - name: Obtain info about Jenkins container
+      become: yes
+      docker_container_info:
+        name: jenkins
+      register: docker_jenkins_info
+
+    - name: Start the Jenkins container with Docker Compose if it's not already in execution
+      become: yes
+      command: "docker compose up -d"
+      args:
+        chdir: "{{ jenkins_folder }}"
+      when: not docker_jenkins_info.exists

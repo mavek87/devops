@@ -1,3 +1,3 @@
 ---
 - import_playbook: ../ubuntu-update-and-upgrade/master_playbook.yml
-- import_playbook: docker_and_compose.yml
+- import_playbook: docker_and_compose_playbook.yml
