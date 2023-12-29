@@ -1,0 +1,28 @@
+---
+
+- name: Playbook for installing Rancher
+  hosts: all
+
+  vars:
+    user_home: "{{ ansible_env.HOME }}"
+    rancher_folder: "{{ user_home }}/rancher"
+
+  tasks:
+    - name: Copy docker compose file for Rancher to target machine host dir
+      become: no
+      copy:
+        src: "../../docker-compose/rancher/"
+        dest: "{{ rancher_folder }}"
+
+    - name: Obtain info about Rancher container
+      become: yes
+      docker_container_info:
+        name: rancher
+      register: docker_rancher_info
+
+    - name: Start the Rancher container with Docker Compose if it's not already in execution
+      become: yes
+      command: "docker compose up -d"
+      args:
+        chdir: "{{ rancher_folder }}"
+      when: not docker_rancher_info.exists

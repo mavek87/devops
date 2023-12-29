@@ -6,6 +6,8 @@
 !sdkman-java/**
 !jenkins/
 !jenkins/**
+!rancher/
+!rancher/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/

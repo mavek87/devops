@@ -2,5 +2,7 @@
 !.gitignore
 !jenkins/
 !jenkins/**
+!rancher/
+!rancher/**
 !prometheus-grafana/
 !prometheus-grafana/**

@@ -21,7 +21,13 @@
           - software-properties-common
           - docker-ce
           - docker-ce-cli
+          - python3-pip
         update_cache: yes
+
+    - name: Install Python Docker with pip (pip install docker)
+      pip:
+        name:
+          - docker
 
     - name: Create docker group
       group:

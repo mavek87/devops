@@ -1,0 +1,3 @@
+---
+- import_playbook: ../docker-and-compose/master_playbook.yml
+- import_playbook: rancher.yml
