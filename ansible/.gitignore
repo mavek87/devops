@@ -16,5 +16,7 @@
 !docker-compose-rancher/**
 !ubuntu-update-and-upgrade/
 !ubuntu-update-and-upgrade/**
+!ubuntu-automatic-security-updates/
+!ubuntu-automatic-security-updates/**
 !ubuntu-kubernetes-k0s-single-cluster/
 !ubuntu-kubernetes-k0s-single-cluster/**

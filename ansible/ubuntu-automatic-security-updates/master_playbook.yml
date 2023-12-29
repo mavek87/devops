@@ -1,0 +1,23 @@
+---
+- name: Playbook to install to enable automatic security updates
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install the unattended-upgrades package (for automatic security updates)
+      apt:
+        name: unattended-upgrades
+        state: present
+
+    - name: Configure unattended-upgrades to install only security updates
+      lineinfile:
+        path: /etc/apt/apt.conf.d/50unattended-upgrades
+        line: '{{ item }}'
+      with_items:
+        - 'Unattended-Upgrade::Allowed-Origins {"${distro_id}:${distro_codename}-security";};'
+
+    - name: Enable the unattended-upgrades service
+      systemd:
+        name: unattended-upgrades
+        enabled: yes
+        state: started

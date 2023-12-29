@@ -8,3 +8,5 @@
 !ubuntu-docker/**
 !ubuntu-prometheus-grafana/
 !ubuntu-prometheus-grafana/**
+!ubuntu-rancher/
+!ubuntu-rancher/**
