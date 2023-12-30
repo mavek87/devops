@@ -9,12 +9,8 @@
         name: unattended-upgrades
         state: present
 
-    - name: Configure unattended-upgrades to install only security updates
-      lineinfile:
-        path: /etc/apt/apt.conf.d/50unattended-upgrades
-        line: '{{ item }}'
-      with_items:
-        - 'Unattended-Upgrade::Allowed-Origins {"${distro_id}:${distro_codename}-security";};'
+    - name: Reconfigure unattended-upgrades to be sure they are installed
+      command: "dpkg-reconfigure -f noninteractive -plow unattended-upgrades"
 
     - name: Enable the unattended-upgrades service
       systemd:
