@@ -55,6 +55,9 @@
       shell: "k0s kubeconfig admin > {{ kube_config_file }}"
       become: yes
 
+    - name: Set correct permissions to kube config file
+      command: "chmod 600 {{ kube_config_file }}"
+
     - name: Gather kubeconfig file metadata
       stat:
         path: "{{ kube_config_file }}"
