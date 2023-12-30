@@ -91,3 +91,7 @@
         dest: ~/.kube/config-ansible-cluster
         flat: yes
       become: yes
+
+    - name: Install Helm
+      command: "snap install helm --classic"
+      become: yes
