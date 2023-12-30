@@ -106,4 +106,29 @@
         - name: Install Helm
           command: "snap install helm --classic"
           become: yes
+
+#        - name: Add Prometheus-community helm repo to install Prometheus and Grafana
+#          kubernetes.core.helm_repository:
+#            name: stable
+#            repo_url: https://prometheus-community.github.io/helm-charts
+
+        # https://www.youtube.com/watch?v=dk2-_DbWb80
+        # https://docs.px.dev/installing-pixie/setting-up-k8s/k0s-setup/
+        -
+        - name: Add Prometheus-community Helm repo
+          command: "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts"
+          become: no
+
+        - name: Update Helm repo
+          command: "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts"
+          become: no
+
+        - name: Install Prometheus with Helm
+          command: "helm install prometheus prometheus-community/prometheus"
+          become: no
+
+        - name: Add Grafana Helm repo
+          command: "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts"
+          become: no
+
       when: k0s_command_exists.rc != 0
