@@ -1,0 +1,3 @@
+---
+- import_playbook: ../ubuntu-server-commons/master_playbook.yml
+- import_playbook: containerd_and_nerdctl.yml

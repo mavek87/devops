@@ -130,5 +130,4 @@
         - name: Add Grafana Helm repo
           command: "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts"
           become: no
-
       when: k0s_command_exists.rc != 0

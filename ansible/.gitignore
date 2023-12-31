@@ -6,6 +6,8 @@
 !sdkman-java/**
 !jenkins/
 !jenkins/**
+!containerd-and-nerdctl/
+!containerd-and-nerdctl/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/

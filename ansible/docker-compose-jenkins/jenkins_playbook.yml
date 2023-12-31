@@ -1,6 +1,5 @@
 - name: Playbook for installing Jenkins using Docker Compose
   hosts: all
-  become: yes
 
   vars:
     user_home: "{{ ansible_env.HOME }}"

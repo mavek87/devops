@@ -1,0 +1,78 @@
+---
+- name: Playbook for installing Containerd and nerdctl
+  hosts: all
+
+  vars:
+    user_home: "{{ ansible_env.HOME }}"
+    nerdctl_tar: "nerdctl-full-1.7.2-linux-amd64.tar.gz"
+
+  tasks:
+    - name: Verify if nerdctl command exists
+      command: "which nerdctl"
+      register: nerdctl_command_exists
+      ignore_errors: true
+
+    - name: Install nerdctl
+      block:
+        - name: Add apt-key
+          apt_key:
+            url: https://download.docker.com/linux/ubuntu/gpg
+          become: yes
+
+        - name: Add docker repo
+          apt_repository:
+            repo: deb https://download.docker.com/linux/ubuntu focal stable
+          become: yes
+
+        - name: Install Containerd
+          apt:
+            name:
+              - apt-transport-https
+              - ca-certificates
+              - curl
+              - software-properties-common
+              - containerd.io
+              - uidmap
+            update_cache: yes
+          become: yes
+
+        - name: Download nerdctl tar
+          get_url:
+            url: "https://github.com/containerd/nerdctl/releases/download/v1.7.2/{{ nerdctl_tar }}"
+            dest: "{{ user_home }}"
+          become: no
+
+        # tar Cxzvvf /usr/local {{ nerdctl_tar }}
+        - name: Extract nerdctl archive
+          unarchive:
+            src: "{{ user_home }}/{{ nerdctl_tar }}"
+            dest: "/usr/local"
+            remote_src: yes
+          become: yes
+
+        - name: Delete downloaded nerdctl tar
+          file:
+            path: "{{ user_home }}/{{ nerdctl_tar }}"
+            state: absent
+          become: yes
+
+        - name: Enable and start containerd service
+          ansible.builtin.systemd:
+            name: containerd
+            enabled: yes
+            state: started
+          become: yes
+
+        - name: Setup rootless nerdctl
+          command: "containerd-rootless-setuptool.sh install"
+          become: no
+      when: nerdctl_command_exists.rc != 0
+
+    - name: Creating alias 'docker' for 'nerdctl' in the /etc/bash.bashrc file if it doesn't exist
+      lineinfile:
+        path: "/etc/bash.bashrc"
+        state: present
+        line: "{{ item }}"
+      with_items:
+        - "alias docker='nerdctl'"
+      become: yes
