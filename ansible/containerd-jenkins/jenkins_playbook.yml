@@ -1,0 +1,23 @@
+- name: Playbook for installing Jenkins using Docker Compose (with containerd)
+  hosts: all
+
+  vars:
+    user_home: "{{ ansible_env.HOME }}"
+    jenkins_folder: "{{ user_home }}/jenkins"
+
+  tasks:
+    - name: Copy docker compose file for Jenkins to target machine
+      become: no
+      copy:
+        src: "../../docker-compose/jenkins/"
+        dest: "{{ jenkins_folder }}"
+
+    - name: Check the status of the Jenkins container
+      become: no
+      shell: "nerdctl ps | grep jenkins | wc -l"
+      register: jenkins_container_count
+
+    - name: Start the Jenkins container with Docker Compose if it's not already in execution
+      become: no
+      command: "nerdctl compose -f {{ jenkins_folder }}/docker-compose.yml up -d"
+      when: jenkins_container_count.stdout_lines[0] == '0'

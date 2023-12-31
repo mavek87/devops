@@ -8,6 +8,8 @@
 !jenkins/**
 !containerd-and-nerdctl/
 !containerd-and-nerdctl/**
+!containerd-jenkins/
+!containerd-jenkins/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/
