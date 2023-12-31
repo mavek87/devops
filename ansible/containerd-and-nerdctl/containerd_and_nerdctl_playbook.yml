@@ -72,6 +72,10 @@
         - name: Setup rootless BuildKit with OCI worker
           shell: "CONTAINERD_NAMESPACE=default containerd-rootless-setuptool.sh install-buildkit-containerd"
           become: no
+
+        - name: Remove containerd NET_BIND_SERVICE block for port < 1024
+          shell: "sysctl net.ipv4.ip_unprivileged_port_start=0"
+          become: yes
       when: nerdctl_command_exists.rc != 0
 
     - name: Creating alias 'docker' for 'nerdctl' in the /etc/bash.bashrc file if it doesn't exist
@@ -82,9 +86,3 @@
       with_items:
         - "alias docker='nerdctl'"
       become: yes
-
-#  INFO[0027] Building image jenkins-jenkins
-#ERRO[0000] `buildctl` needs to be installed and `buildkitd` needs to be running, see https://github.com/moby/buildkit , and `containerd-rootless-setuptool.sh install-buildkit` for OCI worker or `containerd-rootless-setuptool.sh install-buildkit-containerd` for containerd worker  error="failed to ping to host unix:///run/user/1000/buildkit-default/buildkitd.sock: exit status 1\nfailed to ping to host unix:///run/user/1000/buildkit/buildkitd.sock: exit status 1"
-#FATA[0000] no buildkit host is available, tried 2 candidates: failed to ping to host unix:///run/user/1000/buildkit-default/buildkitd.sock: exit status 1
-#failed to ping to host unix:///run/user/1000/buildkit/buildkitd.sock: exit status 1
-#FATA[0027] error while building image jenkins-jenkins: exit status 1

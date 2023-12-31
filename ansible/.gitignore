@@ -10,6 +10,8 @@
 !containerd-and-nerdctl/**
 !containerd-jenkins/
 !containerd-jenkins/**
+!containerd-rancher/
+!containerd-rancher/**
 !docker-and-compose/
 !docker-and-compose/**
 !docker-and-compose-jenkins/
