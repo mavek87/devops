@@ -14,12 +14,14 @@
         src: "../../docker-compose/rancher/"
         dest: "{{ rancher_folder }}"
 
+    # run as root because "privileged: true" is set in the docker compose file
     - name: Check the status of the Rancher container
-      become: no
+      become: yes
       shell: "nerdctl ps | grep rancher | wc -l"
       register: rancher_container_count
 
+    # run as root because "privileged: true" is set in the docker compose file
     - name: Start the Rancher container with Docker Compose if it's not already in execution
-      become: no
+      become: yes
       command: "nerdctl compose -f {{ rancher_folder }}/docker-compose.yml up -d"
       when: rancher_container_count.stdout_lines[0] == '0'
