@@ -12,3 +12,5 @@
 !ubuntu-k0s/**
 !ubuntu-rancher/
 !ubuntu-rancher/**
+**/*.log
+**/*.vagrant/
