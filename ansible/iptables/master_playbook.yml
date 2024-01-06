@@ -1,0 +1,166 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: iptables IPV4 rules
+      block:
+      - name: Allow loopback traffic in INPUT chain
+        iptables:
+          chain: INPUT
+          in_interface: lo
+          jump: ACCEPT
+
+      - name: Allow RELATED, ESTABLISHED traffic in INPUT chain
+        iptables:
+          chain: INPUT
+          match: state
+          state: RELATED,ESTABLISHED
+          jump: ACCEPT
+
+      - name: Allow SSH traffic in INPUT chain
+        iptables:
+          chain: INPUT
+          protocol: tcp
+          dport: 22
+          jump: ACCEPT
+
+      - name: Allow ICMP Echo Request traffic in INPUT chain
+        iptables:
+          chain: INPUT
+          protocol: icmp
+          icmp_type: echo-request
+          jump: ACCEPT
+
+      - name: Allow loopback traffic in OUTPUT chain
+        iptables:
+          chain: OUTPUT
+          out_interface: lo
+          jump: ACCEPT
+
+      - name: Allow RELATED, ESTABLISHED traffic in OUTPUT chain
+        iptables:
+          chain: OUTPUT
+          match: state
+          state: RELATED,ESTABLISHED
+          jump: ACCEPT
+
+      - name: Allow DNS (UDP port 53) traffic in OUTPUT chain
+        iptables:
+          chain: OUTPUT
+          protocol: udp
+          dport: 53
+          jump: ACCEPT
+
+      - name: Allow HTTP (TCP port 80) traffic in OUTPUT chain
+        iptables:
+          chain: OUTPUT
+          protocol: tcp
+          dport: 80
+          match: state
+          state: NEW
+          jump: ACCEPT
+
+      - name: Allow HTTPS (TCP port 443) traffic in OUTPUT chain
+        iptables:
+          chain: OUTPUT
+          protocol: tcp
+          dport: 443
+          match: state
+          state: NEW
+          jump: ACCEPT
+
+      - name: Set default policy to DROP for INPUT chain
+        iptables:
+          chain: INPUT
+          policy: DROP
+
+      - name: Set default policy to DROP for FORWARD chain
+        iptables:
+          chain: FORWARD
+          policy: DROP
+
+      - name: Set default policy to DROP for OUTPUT chain
+        iptables:
+          chain: OUTPUT
+          policy: DROP
+
+    - name: iptables IPV6 rules
+      block:
+      - name: Allow loopback traffic in INPUT chain for IPv6
+        ip6tables:
+          chain: INPUT
+          in_interface: lo
+          jump: ACCEPT
+
+      - name: Allow RELATED, ESTABLISHED traffic in INPUT chain for IPv6
+        ip6tables:
+          chain: INPUT
+          match: state
+          state: RELATED,ESTABLISHED
+          jump: ACCEPT
+
+      - name: Allow SSH traffic in INPUT chain for IPv6
+        ip6tables:
+          chain: INPUT
+          protocol: tcp
+          dport: 22
+          jump: ACCEPT
+
+      - name: Allow ICMP traffic in INPUT chain for IPv6
+        ip6tables:
+          chain: INPUT
+          protocol: icmp
+          jump: ACCEPT
+
+      - name: Allow loopback traffic in OUTPUT chain for IPv6
+        ip6tables:
+          chain: OUTPUT
+          out_interface: lo
+          jump: ACCEPT
+
+      - name: Allow RELATED, ESTABLISHED traffic in OUTPUT chain for IPv6
+        ip6tables:
+          chain: OUTPUT
+          match: state
+          state: RELATED,ESTABLISHED
+          jump: ACCEPT
+
+      - name: Allow DNS (UDP port 53) traffic in OUTPUT chain for IPv6
+        ip6tables:
+          chain: OUTPUT
+          protocol: udp
+          dport: 53
+          jump: ACCEPT
+
+      - name: Allow HTTP (TCP port 80) traffic in OUTPUT chain for IPv6
+        ip6tables:
+          chain: OUTPUT
+          protocol: tcp
+          dport: 80
+          match: state
+          state: NEW
+          jump: ACCEPT
+
+      - name: Allow HTTPS (TCP port 443) traffic in OUTPUT chain for IPv6
+        ip6tables:
+          chain: OUTPUT
+          protocol: tcp
+          dport: 443
+          match: state
+          state: NEW
+          jump: ACCEPT
+
+      - name: Set default policy to DROP for INPUT chain for IPv6
+        ip6tables:
+          chain: INPUT
+          policy: DROP
+
+      - name: Set default policy to DROP for FORWARD chain for IPv6
+        ip6tables:
+          chain: FORWARD
+          policy: DROP
+
+      - name: Set default policy to DROP for OUTPUT chain for IPv6
+        ip6tables:
+          chain: OUTPUT
+          policy: DROP

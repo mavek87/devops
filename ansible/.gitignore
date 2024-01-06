@@ -20,6 +20,8 @@
 !docker-and-compose-prometheus-grafana/**
 !docker-compose-rancher/
 !docker-compose-rancher/**
+!iptables/
+!iptables/**
 !ubuntu-server-commons/
 !ubuntu-server-commons/**
 !ubuntu-update-and-upgrade/
