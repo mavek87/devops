@@ -38,3 +38,15 @@
       user:
         name: vagrant
         groups: docker
+
+    - name: Create the /etc/docker folder if doesn't exist
+      command: "mkdir -p /etc/docker"
+
+    - name: Set docker to use 127.0.0.1 as default for containers instead of the external machine address
+      copy:
+        content: |
+          {
+            "ip": "127.0.0.1"
+          }
+        dest: /etc/docker/daemon.json
+        force: no

@@ -4,7 +4,28 @@
 - name: Playbook for installing Jenkins
   hosts: all
 
+  vars:
+    jenkins_port: 8080
+
   tasks:
+    - name: Allow IPv4 inbound connection to port 8080
+      become: yes
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: "{{ jenkins_port }}"
+        jump: ACCEPT
+        state: present
+
+    - name: Allow IPv6 inbound connection to port 8080
+      become: yes
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: "{{ jenkins_port }}"
+        jump: ACCEPT
+        state: present
+        ip_version: ipv6
 
     - name: Download Jenkins GPG key
       become: true

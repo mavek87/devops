@@ -27,7 +27,7 @@ services:
         aliases:
           - docker
     ports:
-      - "2376:2376"
+      - "127.0.0.1:2376:2376"
     environment:
       DOCKER_TLS_CERTDIR: "/certs"
     volumes:
@@ -45,7 +45,7 @@ services:
     networks:
       - jenkins-network
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     environment:
       JAVA_OPTS: "-Djava.awt.headless=true"
       DOCKER_HOST: "tcp://docker:2376"

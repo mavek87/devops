@@ -1,3 +1,4 @@
 ---
 - import_playbook: ../ubuntu-update-and-upgrade/master_playbook.yml
 - import_playbook: ../ubuntu-automatic-security-updates/master_playbook.yml
+- import_playbook: ../iptables/master_playbook.yml
